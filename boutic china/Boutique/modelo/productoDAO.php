@@ -37,6 +37,9 @@ class ProductoDAO {
         return $this->con->query($sql)->fetchAll(PDO::FETCH_ASSOC);
     }
 
+
+
+
     // ========================================================
     // MÉTODO: ACTUALIZAR PRODUCTO
     // ========================================================

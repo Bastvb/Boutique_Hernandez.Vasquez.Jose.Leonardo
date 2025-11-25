@@ -2,7 +2,7 @@
 // Incluimos el archivo de conexión para acceder a la base de datos.
 require_once 'conexion.php';
 
-// Creamos la clase ClienteDAO (Data Access Object) para manejar la tabla "clientes".
+// Creamos la clase ProductoDAO (Data Access Object) para manejar la tabla "productos".
 class ClienteDAO {
     // Atributo que almacenará la conexión.
     private $con;
@@ -13,53 +13,43 @@ class ClienteDAO {
     }
 
     // ========================================================
-    // MÉTODO: AGREGAR CLIENTE
+    // MÉTODO: AGREGAR PRODUCTO
     // ========================================================
-    public function agregarCliente($nombre, $apellido, $telefono, $correo, $direccion) {
+    public function agregarCliente($id_cliente, $nombre, $apellido, $telefono, $email, $direccion) {
         // Preparamos la consulta SQL con parámetros (?) para evitar inyección SQL.
-        $sql = "INSERT INTO clientes (nombre, apellido, telefono, correo, direccion)
-                VALUES (?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO cliente (id_cliente, nombre, apellido, email, direccion)
+                VALUES (?, ?, ?, ?, ?, ?)";
         // Preparamos la sentencia.
         $stmt = $this->con->prepare($sql);
         // Ejecutamos la sentencia con los valores proporcionados.
-        return $stmt->execute([$nombre, $apellido, $telefono, $correo, $direccion]);
+        return $stmt->execute([$id_cliente, $nombre, $apellido, $telefono, $email, $direccion]);
     }
 
     // ========================================================
-    // MÉTODO: OBTENER TODOS LOS CLIENTES
+    // MÉTODO: OBTENER TODOS LOS PRODUCTOS
     // ========================================================
-    public function obtenerClientes() {
-        // Consultamos todos los clientes en la base de datos.
+    public function obtenerCliente() {
+        // Consulta con INNER JOIN para traer la categoría de cada producto.
         $sql = "SELECT * FROM clientes";
         // Ejecutamos la consulta y devolvemos todos los resultados como un arreglo asociativo.
         return $this->con->query($sql)->fetchAll(PDO::FETCH_ASSOC);
     }
 
     // ========================================================
-    // MÉTODO: OBTENER CLIENTE POR ID (para editar)
+    // MÉTODO: ACTUALIZAR PRODUCTO
     // ========================================================
-    public function obtenerClientePorId($id) {
-        $sql = "SELECT * FROM clientes WHERE id_cliente=?";
+    public function actualizarCliente($id, $nombre, $descripcion, $precio_venta, $stock) {
+        // Sentencia SQL con parámetros para actualizar los datos del producto.
+        $sql = "UPDATE clientes SET nombre_producto=?, descripcion=?, precio_venta=?, stock=? WHERE id_producto=?";
         $stmt = $this->con->prepare($sql);
-        $stmt->execute([$id]);
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+        return $stmt->execute([$nombre, $descripcion, $precio_venta, $stock, $id]);
     }
 
     // ========================================================
-    // MÉTODO: ACTUALIZAR CLIENTE
-    // ========================================================
-    public function editarCliente($id, $nombre, $apellido, $telefono, $correo, $direccion) {
-        $sql = "UPDATE clientes SET nombre=?, apellido=?, telefono=?, correo=?, direccion=? 
-                WHERE id_cliente=?";
-        $stmt = $this->con->prepare($sql);
-        return $stmt->execute([$nombre, $apellido, $telefono, $correo, $direccion, $id]);
-    }
-
-    // ========================================================
-    // MÉTODO: ELIMINAR CLIENTE
+    // MÉTODO: ELIMINAR PRODUCTO
     // ========================================================
     public function eliminarCliente($id) {
-        // Eliminamos un cliente por su ID.
+        // Eliminamos un producto por su ID.
         $sql = "DELETE FROM clientes WHERE id_cliente=?";
         $stmt = $this->con->prepare($sql);
         return $stmt->execute([$id]);

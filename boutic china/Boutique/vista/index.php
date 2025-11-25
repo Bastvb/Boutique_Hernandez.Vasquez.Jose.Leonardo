@@ -38,5 +38,5 @@ include 'includes/header.php';
 // ========================================================
 // Incluimos el pie de página común (cierra <body> y <html>)
 // ========================================================
-include 'includes/footereer.php';
+include 'includes/footer.php';
 ?>

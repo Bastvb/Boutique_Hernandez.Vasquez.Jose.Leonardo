@@ -15,7 +15,7 @@ class Conexion {
         try {
             // Creamos la conexión usando PDO con los parámetros definidos en config.php.
             $this->conexion = new PDO(
-                "mysql:host=" . SERVIDOR . ";dbname=" . BD,
+                "mysql:host=" . SERVIDOR . ";port=3307;dbname=" . BD, // se esecifico el puerto 3307
                 USUARIO,
                 PASSWORD
             );
