@@ -49,6 +49,13 @@
             <p>Genera reportes de inventario, ventas diarias y desempeño.</p>
             <a class="boton" href="../controlador/reporteControlador.php?accion=generar">Generar</a>
         </div>
+        
+         <!-- Reportes -->
+        <div class="tarjeta">
+            <h3>Proveedores</h3>
+            <p>Genera un reporte de proveedores para poder visualizarlos.</p>
+            <a class="boton" href="../controlador/proveedorControlador.php?accion=listar">Administrar</a>
+        </div>
 
     </div>
 </section>
