@@ -2,57 +2,61 @@
 // Incluimos el archivo de conexión para acceder a la base de datos.
 require_once 'conexion.php';
 
-// Creamos la clase ProductoDAO (Data Access Object) para manejar la tabla "productos".
 class CategoriaDAO {
-    // Atributo que almacenará la conexión.
+    // Conexión PDO
     private $con;
 
-    // Constructor: obtiene la conexión activa desde la clase Conexion.
     public function __construct() {
         $this->con = Conexion::obtenerConexion();
     }
 
     // ========================================================
-    // MÉTODO: AGREGAR PRODUCTO
+    // AGREGAR CATEGORÍA
     // ========================================================
-    public function agregarCategoria($id_cliente, $nombre, $apellido, $telefono, $email, $direccion) {
-        // Preparamos la consulta SQL con parámetros (?) para evitar inyección SQL.
-        $sql = "INSERT INTO cliente (id_cliente, nombre, apellido, email, direccion)
-                VALUES (?, ?, ?, ?, ?, ?)";
-        // Preparamos la sentencia.
+    public function agregarCategoria($nombre_categoria, $descripcion) {
+        // Tabla: categorias(id_categoria, nombre_categoria, descripcion)
+        $sql = "INSERT INTO categorias (nombre_categoria, descripcion)
+                VALUES (?, ?)";
         $stmt = $this->con->prepare($sql);
-        // Ejecutamos la sentencia con los valores proporcionados.
-        return $stmt->execute([$id_cliente, $nombre, $apellido, $telefono, $email, $direccion]);
+        return $stmt->execute([$nombre_categoria, $descripcion]);
     }
 
     // ========================================================
-    // MÉTODO: OBTENER TODOS LOS PRODUCTOS
+    // OBTENER TODAS LAS CATEGORÍAS
     // ========================================================
-    public function obtenerCategoria() {
-        // Consulta con INNER JOIN para traer la categoría de cada producto.
-        $sql = "SELECT * FROM clientes";
-        // Ejecutamos la consulta y devolvemos todos los resultados como un arreglo asociativo.
+    public function obtenerCategorias() {
+        $sql = "SELECT * FROM categorias";
         return $this->con->query($sql)->fetchAll(PDO::FETCH_ASSOC);
     }
 
     // ========================================================
-    // MÉTODO: ACTUALIZAR PRODUCTO
+    // OBTENER UNA CATEGORÍA POR ID
     // ========================================================
-    public function actualizarCategoria($id, $nombre, $descripcion, $precio_venta, $stock) {
-        // Sentencia SQL con parámetros para actualizar los datos del producto.
-        $sql = "UPDATE clientes SET nombre_producto=?, descripcion=?, precio_venta=?, stock=? WHERE id_producto=?";
+    public function obtenerCategoriaPorId($id) {
+        $sql = "SELECT * FROM categorias WHERE id_categoria = ?";
         $stmt = $this->con->prepare($sql);
-        return $stmt->execute([$nombre, $descripcion, $precio_venta, $stock, $id]);
+        $stmt->execute([$id]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
     // ========================================================
-    // MÉTODO: ELIMINAR PRODUCTO
+    // ACTUALIZAR CATEGORÍA
+    // ========================================================
+    public function actualizarCategoria($id, $nombre_categoria, $descripcion) {
+        $sql = "UPDATE categorias
+                SET nombre_categoria = ?, descripcion = ?
+                WHERE id_categoria = ?";
+        $stmt = $this->con->prepare($sql);
+        return $stmt->execute([$nombre_categoria, $descripcion, $id]);
+    }
+
+    // ========================================================
+    // ELIMINAR CATEGORÍA
     // ========================================================
     public function eliminarCategoria($id) {
-        // Eliminamos un producto por su ID.
-        $sql = "DELETE FROM clientes WHERE id_cliente=?";
+        $sql = "DELETE FROM categorias WHERE id_categoria = ?";
         $stmt = $this->con->prepare($sql);
         return $stmt->execute([$id]);
     }
 }
-?>
+

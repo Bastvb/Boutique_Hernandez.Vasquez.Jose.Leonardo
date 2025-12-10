@@ -56,6 +56,5 @@
             <p>Genera un reporte de proveedores para poder visualizarlos.</p>
             <a class="boton" href="../controlador/proveedorControlador.php?accion=listar">Administrar</a>
         </div>
-
     </div>
 </section>

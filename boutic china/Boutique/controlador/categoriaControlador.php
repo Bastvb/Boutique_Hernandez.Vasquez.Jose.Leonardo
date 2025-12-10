@@ -2,79 +2,74 @@
 // Importamos el DAO
 require_once __DIR__ . '/../modelo/CategoriaDAO.php';
 
-// Instanciamos el DAO de proveedores
 $categoriaDAO = new CategoriaDAO();
 
 // Acción recibida por GET
-$accion = $_GET['accion'] ?? '';
+$accion = $_GET['accion'] ?? 'listar';
 
 switch ($accion) {
 
     // ========================================================
-    // LISTAR PROVEEDORES
+    // LISTAR CATEGORÍAS
     // ========================================================
     case 'listar':
-        $categorias = $categoriaDAO->obtenerCategoria();
+        $categorias = $categoriaDAO->obtenerCategorias();
         include __DIR__ . '/../vista/categoria.php';
         break;
 
     // ========================================================
-    // AGREGAR PROVEEDOR
+    // AGREGAR CATEGORÍA
+    // (muestra formulario o guarda, según método)
     // ========================================================
     case 'agregar':
-        if ($_POST) {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $categoriaDAO->agregarCategoria(
-                $_POST['nombre_proveedor'],
-                $_POST['contacto'],
-                $_POST['telefono'],
-                $_POST['email'],
-                $_POST['direccion']
+                $_POST['nombre_categoria'],
+                $_POST['descripcion']
             );
-
             header('Location: categoriaControlador.php?accion=listar');
+            exit;
+        } else {
+            include __DIR__ . '/../vista/agregarCategoria.php';
         }
         break;
 
     // ========================================================
-    // EDITAR PROVEEDOR (cargar datos en formulario)
+    // EDITAR CATEGORÍA (cargar datos en formulario)
     // ========================================================
     case 'editar':
-        $categoria = $categoriaDAO->obtenerCategoria($_GET['id']);
+        $categoria = $categoriaDAO->obtenerCategoriaPorId($_GET['id']);
         include __DIR__ . '/../vista/editarCategoria.php';
         break;
 
     // ========================================================
-    // ACTUALIZAR PROVEEDOR
+    // ACTUALIZAR CATEGORÍA
     // ========================================================
     case 'actualizar':
-        if ($_POST) {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $categoriaDAO->actualizarCategoria(
-                $_POST['id_proveedor'],
-                $_POST['nombre_proveedor'],
-                $_POST['contacto'],
-                $_POST['telefono'],
-                $_POST['email'],
-                $_POST['direccion']
+                $_POST['id_categoria'],
+                $_POST['nombre_categoria'],
+                $_POST['descripcion']
             );
-
             header('Location: categoriaControlador.php?accion=listar');
+            exit;
         }
         break;
 
     // ========================================================
-    // ELIMINAR PROVEEDOR
+    // ELIMINAR CATEGORÍA
     // ========================================================
     case 'eliminar':
         $categoriaDAO->eliminarCategoria($_GET['id']);
         header('Location: categoriaControlador.php?accion=listar');
-        break;
+        exit;
 
     // ========================================================
     // ACCIÓN POR DEFECTO
     // ========================================================
     default:
-        $categorias = $categoriaDAO->obtenerCategoria();
+        $categorias = $categoriaDAO->obtenerCategorias();
         include __DIR__ . '/../vista/categoria.php';
         break;
 }
-?>
