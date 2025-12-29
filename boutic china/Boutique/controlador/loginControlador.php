@@ -1,7 +1,7 @@
 <?php
 
 session_start();
-require_once '../modelo/LoginDAO.php'; 
+require_once __DIR__ . '/../modelo/loginDAO.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Obtener datos del formulario

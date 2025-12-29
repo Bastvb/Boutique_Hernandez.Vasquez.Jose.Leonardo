@@ -1,6 +1,6 @@
 <?php
 // Importamos el DAO
-require_once __DIR__ . '/../modelo/CategoriaDAO.php';
+require_once __DIR__ . '/../modelo/categoriaDAO.php';
 
 $categoriaDAO = new CategoriaDAO();
 

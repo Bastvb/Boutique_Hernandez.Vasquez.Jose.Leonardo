@@ -1,6 +1,6 @@
 <?php
 // Importamos el DAO
-require_once __DIR__ . '/../modelo/ProveedorDAO.php';
+require_once __DIR__ . '/../modelo/proveedorDAO.php';
 
 // Instanciamos el DAO de proveedores
 $proveedorDAO = new ProveedorDAO();
